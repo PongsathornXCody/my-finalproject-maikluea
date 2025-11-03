@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.thai {
+    font-family: "Itim", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.eng {
+    font-family: "Marhey", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.main-dis{
+    background-color: #a9e1ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    /* จัดกึ่งกลาง */
+    margin-left: auto;
+    margin-right: auto;
+    /* ============== */
+    width: 95%;
+    height: 100vh;
+    border-radius: 6px;
+}
+
+div#amount{
+    /* background-color: aliceblue; */
+    height: 10%;
+    width: 90%;
+    /* display: flex;
+    flex-direction: row; */
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    grid-template-rows: repeat(1, auto);
+    /* justify-items: center; */
+    margin-top: 5%;
+}
+
+@layer components{
+    .section-text{
+        @apply  eng bg-slate-500 text-yellow-300 px-[3%] py-3 my-[6%] mx-[3%] rounded-2xl
+        transform duration-150 hover:ring-2 hover:ring-yellow-400 hover:scale-110 sm:py-6 sm:pb-9 
+    }
+}
+
+/* หน้าจอโทรศัพท์ */
+@media (max-width: 640px){
+    .progress-bg{
+    width: 90%;
+    height: 35%;
+    /* จัดกึ่งกลาง */
+    margin-left: auto;
+    margin-right: auto;
+    /* ============== */
+    margin-top: 2%;
+    border-radius: 8px;
+}
+
+}
+/* หน้าจอเดสท็อป */
+@media (min-width: 641px){
+    .progress-bg{
+    width: 90%;
+    height: 60%;
+    /* จัดกึ่งกลาง */
+    margin-left: auto;
+    margin-right: auto;
+    /* ============== */
+    margin-top: 2%;
+    border-radius: 8px;
+}
+}
