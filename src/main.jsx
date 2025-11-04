@@ -8,7 +8,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Maindisplay } from './components/maindisplay.jsx'
 
 createRoot(document.getElementById('root')).render(
-  <BrowserRouter basename="/my-finalproject-maikluea">
+  <BrowserRouter>
     <App />
   </BrowserRouter>,
 )

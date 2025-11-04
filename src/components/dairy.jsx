@@ -2,14 +2,18 @@ import picPyronxene from "../assets/Pyroxene.png";
 import arenaIcon from "../assets/BlueArchive-ArenaIcon.png";
 import { useState } from "react";
 
-export function Dairy({arenaReward, setArenaReward, ismonthPass, setisMonthpass}) {
+export function Dairy({arenaReward, setArenaReward, ishalfmonthPass, setishalfMonthpass, quantityDay, setQuantityday, isfullmonthpass, setisfullMonthpass}) {
 
   const handleArenaChange = (e) => {
-    setArenaReward(parseInt(e.target.value, 10));
+    setArenaReward(Number(e.target.value, 10));
   };
 
-  const handleMonthPass = (e) => {
-    setisMonthpass(e.target.checked);
+  const handlehalfMonthPass = (e) => {
+    setishalfMonthpass(e.target.checked);
+  };
+
+  const handlefullMonthPass = (e) => {
+    setisfullMonthpass(e.target.checked);
   };
 
   return (
@@ -24,7 +28,7 @@ export function Dairy({arenaReward, setArenaReward, ismonthPass, setisMonthpass}
         />
         <p className="thai mt-3">จำนวน</p>
         <input
-          type="number"
+          type="number" value={quantityDay} onChange={(e)=>setQuantityday(e.target.value)}
           className="eng rounded-2xl w-[70px] h-6 mt-3 ml-3 p-4 bg-slate-500 text-yellow-400 text-center"
         />
         <p className="thai mt-3 ml-3">วัน</p>
@@ -55,7 +59,12 @@ export function Dairy({arenaReward, setArenaReward, ismonthPass, setisMonthpass}
       <div className="flex mt-2">
         <img src={arenaIcon} alt="arenaIcon" width="60rem" height="auto" />
         <p className="thai text-black mt-4">รายเดือน: ครึ่งเดือน</p>
-        <input className="ml-2 mt-2" type="checkbox" checked={ismonthPass} onChange={handleMonthPass}/>
+        <input className="ml-2 mt-2" type="checkbox" checked={ishalfmonthPass} onChange={handlehalfMonthPass}/>
+      </div>
+      <div className="flex mt-2">
+        <img src={arenaIcon} alt="arenaIcon" width="60rem" height="auto" />
+        <p className="thai text-black mt-4">รายเดือน: เต็มเดือน</p>
+        <input className="ml-2 mt-2" type="checkbox" checked={isfullmonthpass} onChange={handlefullMonthPass}/>
       </div>
     </div>
   );
