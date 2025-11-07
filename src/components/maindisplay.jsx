@@ -19,13 +19,13 @@ export function Maindisplay() {
   // จำนวนวันในหน้า Dairy เอามาคูณกับเพชรที่ได้ต่อวัน
   const amountDay = quantityDay  * 180;
   // Battle Pass รายเดือน แบ่งเป็น 2 Pack
-  // Halfmonth
-  const halfmouthPyroxene = ishalfmonthpass ? 90 : 0;
+  // Halfmonth 
+  const halfmouthPyroxene = ishalfmonthpass ? 20 : 0;
   // Fullmonth
-  const fullmouthPyroxene = isfullmonthpass ? 180 : 0;
+  const fullmouthPyroxene = isfullmonthpass ? 40 : 0;
 
   // เพชรรวมทั้งหมด (ในปัจจุบัน)
-  const totalPyroxene = Number(pyroxene) + Number(amountDay) + Number(arenaReward * quantityDay);
+  const totalPyroxene = Number(pyroxene) + Number(amountDay) + Number(arenaReward * quantityDay) + Number(quantityDay * halfmouthPyroxene) + Number(quantityDay * fullmouthPyroxene);
 ;
   //////////////////////////////////////////////////////////////////
 
@@ -59,7 +59,7 @@ export function Maindisplay() {
             thaiFontClass="thai" // ส่งชื่อคลาสฟอนต์ (จาก CSS) เข้าไป
           />
         </div>
-        <p className="thai text-center pb-[3%] pt-[2%] my-[3%]">เป้าหมายเท่ากับ <strong><mark>{roll} roll หรือ {pyroxeneGoat} {fullmouthPyroxene} {halfmouthPyroxene}</mark></strong></p>
+        <p className="thai text-center pb-[3%] pt-[2%] my-[3%]">เป้าหมายเท่ากับ <strong><mark>{roll} roll หรือ {pyroxeneGoat} </mark></strong></p>
       </div>
       <div className="bg-white mt-4 h-[80%] w-[90%] rounded-[6px] flex flex-col justify-center">
         {/* ส่วนหัวข้อเลือก Page */}
