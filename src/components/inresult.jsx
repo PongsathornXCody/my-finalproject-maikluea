@@ -1,7 +1,4 @@
-// src/components/Inresult.jsx
-// (นี่คือไฟล์ที่สร้างขึ้นใหม่ โดยอิงจาก cartitem.jsx เดิม)
 
-// เราจะใช้ text (+, -, x) แทน Icons ที่ไม่ได้ import มาในโปรเจกต์นี้
 export function Inresult({ item, onAdd, onRemove, onClear }) {
   return (
     <div className="flex items-center gap-3 group p-2 bg-white rounded-lg shadow-sm">
@@ -20,7 +17,6 @@ export function Inresult({ item, onAdd, onRemove, onClear }) {
         </p>
       </div>
       
-      {/* ส่วนควบคุมจำนวน (เหมือนใน cartitem.jsx) */}
       <div className="flex items-center gap-2 flex-shrink-0">
         <button 
           onClick={() => onRemove(item)}
@@ -41,7 +37,6 @@ export function Inresult({ item, onAdd, onRemove, onClear }) {
         </button>
       </div>
       
-      {/* ปุ่มลบทั้งหมด (เหมือนใน cartitem.jsx) */}
       <button 
         onClick={() => onClear(item)} 
         className="text-gray-400 transition-colors hover:text-red-500 text-lg font-bold"

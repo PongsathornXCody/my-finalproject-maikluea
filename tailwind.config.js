@@ -7,8 +7,18 @@ export default {
 
   ],
   theme: {
-    extend: {},
+    extend: {textShadow: {
+        outline: "2px 0 black, -2px 0 black, 0 2px black, 0 -2px black",
+      },},
   },
-  plugins: [],
+  plugins: [ function ({ addUtilities }) {
+      const newUtilities = {
+        ".text-outline": {
+          textShadow:
+            "2px 0 black, -2px 0 black, 0 2px black, 0 -2px black",
+        },
+      };
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    },],
 }
 

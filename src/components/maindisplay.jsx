@@ -4,10 +4,9 @@ import "./maindisplay.css";
 import { Topup } from "./top-up";
 import { Rate } from "./Rate";
 import { Dash } from "./dash";
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { CircularProgress } from "./CircularProgress";
-import { Toupitems } from "./topupitems";
-
+import { Toupitems } from "./topupitems"; 
 
 const myProducts = [
   {
@@ -146,9 +145,45 @@ const myProducts = [
   },
 ];
 
+// -----------------------------------------------------------------
+// Localstorage Zone
+// -----------------------------------------------------------------
+const getInitialState = () => {
+
+  const savedData = localStorage.getItem('blueArchivePlannerData');
+  
+  // 2. ถ้าเจอ (ไม่ใช่ null)
+  if (savedData) {
+    console.log("พบข้อมูลที่บันทึกไว้! กำลังโหลด...");
+    return JSON.parse(savedData);
+  }
+  
+
+  console.log("ไม่พบข้อมูล... เริ่มต้นใหม่");
+  return {
+    pyroxene: 0,
+    roll: 0,
+    quantityDay: 0,
+    arenaReward: 45,
+    ishalfmonthpass: false,
+    isfullmonthpass: false,
+    cart: [],
+    bossTasks: [],
+  };
+};
+
+// -----------------------------------------------------------------
+
 export function Maindisplay() {
+
+  const initialState = getInitialState();
+
+  // ดึงมาจาก initialState ที่โหลดมา
   const [products] = useState(myProducts);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(initialState.cart);
+
+  // const [products] = useState(myProducts);
+  // const [cart, setCart] = useState([]);
 
     const addToCart = (product) =>
     {
@@ -198,13 +233,54 @@ export function Maindisplay() {
     });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  const [pyroxene, setPyroxene] = useState(0); // เพชรกาชา
-  const [roll, setRoll] = useState(0); // โรลกาชา : เพชรกาชา/120
-  const [quantityDay, setQuantityday] = useState(0);
+  const [bossTasks, setBossTasks] = useState(initialState.bossTasks);
+
+  // const [bossTasks, setBossTasks] = useState([]);
+
+  const addBossTask = (taskData) => {
+    const newTask = {
+      id: Date.now(), 
+      ...taskData,
+      isChecked: false, 
+    };
+    setBossTasks((prevTasks) => [...prevTasks, newTask]);
+  };
+
+  const removeBossTask = (taskId) => {
+    setBossTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  };
+
+  const toggleBossTaskCheck = (taskId) => {
+    setBossTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === taskId ? { ...task, isChecked: !task.isChecked } : task
+      )
+    );
+  };
+
+  // [ใหม่!] คำนวณ Pyroxene โบนัสจากบอส (1,600 ต่องาน)
+  const bossTaskBonus = useMemo(() => {
+    const checkedTasks = bossTasks.filter((task) => task.isChecked).length;
+    return checkedTasks * 1600;
+  }, [bossTasks]); // คำนวณใหม่ทุกครั้งที่ bossTasks เปลี่ยน
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  const [pyroxene, setPyroxene] = useState(initialState.pyroxene);
+  const [roll, setRoll] = useState(initialState.roll);
+  const [quantityDay, setQuantityday] = useState(initialState.quantityDay);
   const pyroxeneGoat = roll*120;
-  const [arenaReward, setArenaReward] = useState(45); // เพชรจาก Arena
-  const [ishalfmonthpass, setishalfMonthpass] = useState(false);
-  const [isfullmonthpass, setisfullMonthpass] = useState(false);
+  const [arenaReward, setArenaReward] = useState(initialState.arenaReward);
+  const [ishalfmonthpass, setishalfMonthpass] = useState(initialState.ishalfmonthpass);
+  const [isfullmonthpass, setisfullMonthpass] = useState(initialState.isfullmonthpass);
+
+  // const [pyroxene, setPyroxene] = useState(0); // เพชรกาชา
+  // const [roll, setRoll] = useState(0); // โรลกาชา : เพชรกาชา/120
+  // const [quantityDay, setQuantityday] = useState(0);
+  // const pyroxeneGoat = roll*120;
+  // const [arenaReward, setArenaReward] = useState(45); // เพชรจาก Arena
+  // const [ishalfmonthpass, setishalfMonthpass] = useState(false);
+  // const [isfullmonthpass, setisfullMonthpass] = useState(false);
   // จำนวนวันในหน้า Dairy เอามาคูณกับเพชรที่ได้ต่อวัน
   const amountDay = quantityDay  * 180;
   // Battle Pass รายเดือน แบ่งเป็น 2 Pack
@@ -224,12 +300,43 @@ export function Maindisplay() {
       Number(quantityDay * fullmouthPyroxene) +   // 5. พาสแพ็กใหญ่ 40 ต่อวัน
       Number(totalPrice) +                        // 6. เพชรจากตะกร้า (Top-up)
       Number(halfmouthPyroxene_OneTime) +         // 7. แรกเข้าแพ็กเล็ก (176)
-      Number(fullmouthPyroxene_OneTime);          // 8. แรกเข้าแพ็กใหญ่ (352)
+      Number(fullmouthPyroxene_OneTime) +          // 8. แรกเข้าแพ็กใหญ่ (352)
+      Number(bossTaskBonus);
 ;
   //////////////////////////////////////////////////////////////////
 
   const percentage = pyroxeneGoat > 0 ? (Number(totalPyroxene) / pyroxeneGoat) * 100 : 0;
 
+  // -----------------------------------------------------------------
+  // ส่วนบันทึกข้อมูล
+  // -----------------------------------------------------------------
+  useEffect(() => {
+    
+    // 2. จับข้อมูลสำคัญ 8 อย่าง
+    const saveData = {
+      pyroxene,
+      roll,
+      quantityDay,
+      arenaReward,
+      ishalfmonthpass,
+      isfullmonthpass,
+      cart,
+      bossTasks,
+    };
+    
+    localStorage.setItem('blueArchivePlannerData', JSON.stringify(saveData));
+    console.log("บันทึกลง LocalStorage");
+
+  }, [ //ข้อมูลสำคัญ 8 อย่าง
+    pyroxene,
+    roll,
+    quantityDay,
+    arenaReward,
+    ishalfmonthpass,
+    isfullmonthpass,
+    cart,
+    bossTasks
+  ]);
 
   return (
     // ส่วนหน้าจอหลัก
@@ -291,10 +398,24 @@ export function Maindisplay() {
           <Route path="/topup" element={<Topup products={products} onAddToCart = {addToCart}/>} />
 
           {/* ไปยังหน้า Rate วืดๆ */}
-          <Route path="/rate" element={<Rate />} />
+          <Route path="/rate" 
+          element={<Rate tasks={bossTasks}
+          onAddTask={addBossTask}
+          onRemoveTask={removeBossTask}
+          onToggleTask={toggleBossTaskCheck}/>} />
 
           {/* ไปยังหน้า Dash วืดๆ */}
-          <Route path="/dash" element={<Dash pyroxene={pyroxene}/>} />
+          <Route path="/dash" element={<Dash 
+          totalPyroxene={totalPyroxene}
+          pyroxeneGoat={pyroxeneGoat}
+          percentage={percentage}
+  
+          basePyroxene={pyroxene}
+          dailyBonus={amountDay + (arenaReward * quantityDay)}
+          passBonus={(quantityDay * halfmouthPyroxene) + (quantityDay * fullmouthPyroxene) + halfmouthPyroxene_OneTime + fullmouthPyroxene_OneTime}
+          topUpBonus={totalPrice}
+          bossBonus={bossTaskBonus}
+/>} />
         </Routes>
       </div>     
     </div>

@@ -7,14 +7,12 @@ import { Inresult } from "./inresult"; // <-- ตรวจสอบว่า imp
 export function Toupitems({packProducts, totalPrice, totalItems, onAddToCart, onRemoveFromCart, onClearItem}){
 
     return(
-      // (ปรับสไตล์เล็กน้อยเพื่อให้เหมือน "ตะกร้า" จากตัวอย่างแรก)
       <div className="bg-white rounded-xl shadow-lg p-6">
         <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-3 thai">
           <BsCartCheckFill size={20} />
           ไอเทมที่เลือก ({totalItems} ชิ้น)
         </h2>
         
-      {/* แก้ไข typo จาก .lenght เป็น .length */}
       {packProducts.length === 0 ? (
         <div className="text-center py-4">
           <p className="thai text-gray-500 text-md mt-4">ยังไม่มีไอเทม</p>
@@ -22,7 +20,6 @@ export function Toupitems({packProducts, totalPrice, totalItems, onAddToCart, on
         </div>
       ) : (
         <>
-          {/* Pack Items List (เหมือน cart.jsx) */}
           <div className="space-y-3 max-h-[200px] overflow-y-auto pr-2">
             {packProducts.map((item) => (
               <Inresult 
@@ -35,7 +32,6 @@ export function Toupitems({packProducts, totalPrice, totalItems, onAddToCart, on
             ))}
           </div>
 
-          {/* แสดงยอดรวม (เหมือน cart.jsx) */}
           <div className="mt-4 pt-4 border-t border-gray-200">
             <div className="flex justify-between items-center text-lg font-bold text-gray-900">
               <span className="thai">Pyroxene รวมจาก Top-Up</span>
