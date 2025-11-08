@@ -57,14 +57,14 @@ export function Dairy({arenaReward, setArenaReward, ishalfmonthPass, setishalfMo
         <p className="eng text-black">pyroxene</p>
       </div>
       <div className="flex mt-2">
-        <img src={arenaIcon} alt="arenaIcon" width="60rem" height="auto" />
+        <img src="LargeMonth_Package.png" alt="arenaIcon" width="60rem" height="auto" />
         <p className="thai text-black mt-4">แพ็กเพชรฟ้ารายเดือนชุดเล็ก</p>
-        <input className="ml-2 mt-2" type="checkbox" checked={ishalfmonthPass} onChange={handlehalfMonthPass}/>
+        <input className="ml-4 mt-2" type="checkbox" checked={ishalfmonthPass} onChange={handlehalfMonthPass}/>
       </div>
       <div className="flex mt-2">
-        <img src={arenaIcon} alt="arenaIcon" width="60rem" height="auto" />
+        <img src="SmallMonth_Package.png" alt="arenaIcon" width="60rem" height="auto" />
         <p className="thai text-black mt-4">แพ็กเพชรฟ้ารายเดือนชุดใหญ่</p>
-        <input className="ml-2 mt-2" type="checkbox" checked={isfullmonthpass} onChange={handlefullMonthPass}/>
+        <input className="ml-4 mt-2" type="checkbox" checked={isfullmonthpass} onChange={handlefullMonthPass}/>
       </div>
     </div>
   );

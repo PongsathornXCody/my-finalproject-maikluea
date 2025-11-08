@@ -25,13 +25,13 @@
     margin-right: auto;
     /* ============== */
     width: 95%;
-    height: 100vh;
+    height: 550vh;
     border-radius: 6px;
 }
 
 div#amount{
     /* background-color: aliceblue; */
-    height: 10%;
+    height: 1%;
     width: 90%;
     /* display: flex;
     flex-direction: row; */
@@ -39,7 +39,7 @@ div#amount{
     grid-template-columns: repeat(2, auto);
     grid-template-rows: repeat(1, auto);
     /* justify-items: center; */
-    margin-top: 5%;
+    margin-top: 20px;
 }
 
 @layer components{
@@ -53,12 +53,12 @@ div#amount{
 @media (max-width: 640px){
     .progress-bg{
     width: 90%;
-    height: 35%;
+    height: 5%;
     /* จัดกึ่งกลาง */
     margin-left: auto;
     margin-right: auto;
     /* ============== */
-    margin-top: 2%;
+    margin-top: 20px;
     border-radius: 8px;
 }
 
@@ -67,12 +67,12 @@ div#amount{
 @media (min-width: 641px){
     .progress-bg{
     width: 90%;
-    height: 60%;
+    height: 8%;
     /* จัดกึ่งกลาง */
     margin-left: auto;
     margin-right: auto;
     /* ============== */
-    margin-top: 2%;
+    margin-top: 20px;
     border-radius: 8px;
 }
 }

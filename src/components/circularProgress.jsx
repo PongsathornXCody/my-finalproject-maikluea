@@ -26,7 +26,7 @@ export function CircularProgress({ percentage = 0, size = 120, strokeWidth = 12,
     <div className="relative inline-flex items-center justify-center" style={{ width: size, height: size }}>
       
       {/* SVG Container */}
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="transform -rotate-90">
+      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="transform -rotate-90 lg:size-auto">
         
         {/* 1. เส้นวงกลมพื้นหลัง (สีเทา) */}
         <circle
