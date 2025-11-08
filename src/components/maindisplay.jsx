@@ -4,7 +4,7 @@ import "./maindisplay.css";
 import { Topup } from "./top-up";
 import { Rate } from "./Rate";
 import { Dash } from "./dash";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { CircularProgress } from "./CircularProgress";
 import { Toupitems } from "./topupitems";
 
@@ -148,7 +148,7 @@ const myProducts = [
 
 export function Maindisplay() {
   const [products] = useState(myProducts);
-    const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState([]);
 
     const addToCart = (product) =>
     {
@@ -170,7 +170,34 @@ export function Maindisplay() {
           }
     });
 }
+  const removeFromCart = (product) => 
+    {
+      setCart((prevCart) => 
+      {
+        const existItem = prevCart.find((item) => item.id === product.id);
 
+        if(existItem.quantity === 1)
+          {
+            return prevCart.filter((item) => item.id === product.id)
+          }
+        else
+          {
+            return prevCart.map((item) => item.id === product.id ? {...item, quantity: item.quantity -1} : item)
+          }
+      });
+    }
+    const clearItemFromCart = (product) => 
+      {
+        setCart((prevCart) => prevCart.filter((item) => item.id !== product.id));
+      }
+      const totalPrice = useMemo(() => {
+      return cart.reduce((total, item) => total + item.pyroxene * item.quantity, 0);
+    });
+    const totalItems = useMemo(() => {
+      return cart.reduce((total, item) => total + item.quantity, 0);
+    });
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const [pyroxene, setPyroxene] = useState(0); // เพชรกาชา
   const [roll, setRoll] = useState(0); // โรลกาชา : เพชรกาชา/120
   const [quantityDay, setQuantityday] = useState(0);
@@ -183,11 +210,21 @@ export function Maindisplay() {
   // Battle Pass รายเดือน แบ่งเป็น 2 Pack
   // Halfmonth 
   const halfmouthPyroxene = ishalfmonthpass ? 20 : 0;
+  const halfmouthPyroxene_OneTime = ishalfmonthpass ? 176 : 0;
   // Fullmonth
   const fullmouthPyroxene = isfullmonthpass ? 40 : 0;
+  const fullmouthPyroxene_OneTime = isfullmonthpass ? 352 : 0;
 
   // เพชรรวมทั้งหมด (ในปัจจุบัน)
-  const totalPyroxene = Number(pyroxene) + Number(amountDay) + Number(arenaReward * quantityDay) + Number(quantityDay * halfmouthPyroxene) + Number(quantityDay * fullmouthPyroxene);
+  const totalPyroxene = 
+      Number(pyroxene) +                         // 1. เพชรตอนนี้
+      Number(amountDay) +                         // 2. เพชรจากประจำวัน 180 ต่อวัน
+      Number(arenaReward * quantityDay) +         // 3. เพชรจากอารีหัว...น่าเว่ย (x * วัน)
+      Number(quantityDay * halfmouthPyroxene) +   // 4. พาสแพ็กเล็ก 20 ต่อวัน
+      Number(quantityDay * fullmouthPyroxene) +   // 5. พาสแพ็กใหญ่ 40 ต่อวัน
+      Number(totalPrice) +                        // 6. เพชรจากตะกร้า (Top-up)
+      Number(halfmouthPyroxene_OneTime) +         // 7. แรกเข้าแพ็กเล็ก (176)
+      Number(fullmouthPyroxene_OneTime);          // 8. แรกเข้าแพ็กใหญ่ (352)
 ;
   //////////////////////////////////////////////////////////////////
 
@@ -230,8 +267,13 @@ export function Maindisplay() {
           <Link to="/topup" className="section-text">Top-Up</Link>
           <Link to="/rate" className="section-text">Rate</Link>
           <Link to="/dash" className="section-text">Dash</Link>    
-        </div>    
-        <Toupitems />
+        </div>         
+        <Toupitems packProducts={cart}
+                   totalPrice={totalPrice}
+                   totalItems={totalItems}
+                   onAddToCart={addToCart}
+                   onRemoveFromCart={removeFromCart}
+                   onClearItem={clearItemFromCart}/>
         {/* พื้นที่ Page */}
         <Routes>
           {/* ไปยังหน้า Dairy วืดๆ */}
@@ -246,7 +288,7 @@ export function Maindisplay() {
           setisfullMonthpass={setisfullMonthpass} />}/>
 
           {/* ไปยังหน้า Top-up วืดๆ */}
-          <Route path="/topup" element={<Topup products={products}/>} />
+          <Route path="/topup" element={<Topup products={products} onAddToCart = {addToCart}/>} />
 
           {/* ไปยังหน้า Rate วืดๆ */}
           <Route path="/rate" element={<Rate />} />
